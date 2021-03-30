@@ -20,7 +20,7 @@ let count = 0;
 while (count <= gridWidth * gridWidth) {
   const canvas = document.querySelector('.canvas');
   const div = document.createElement('div');
-  div.className = 'square color-5';
+  div.className = 'square color-7';
   canvas.appendChild(div);
   count++;
 }
@@ -49,6 +49,16 @@ while (count <= gridWidth * gridWidth) {
 // Add queries for all your squares, palette colors, and brush here.
 // (Note the singular or plural used in that sentence!)
 
+const brushColors = document.querySelectorAll('.palette-color');
+const currentColor = document.querySelector('.current-brush');
+
+for (const brushColor of brushColors){
+  brushColor.addEventListener('click', function(){
+    const color = brushColor.classList[1];
+    currentColor.className = 'current-brush ' + color;
+  });
+}
+
 
 
 /****************************
@@ -61,6 +71,40 @@ while (count <= gridWidth * gridWidth) {
 // run as event listeners (after the next step is set up) isn't a
 // bad idea for testing purposes.
 
+let mouseDown = false;
+let mouseUp = true;
+
+function getColor(ele){
+  return ele.classList[1];
+}
+
+
+
+function clicki(event){
+  if (mouseDown){
+    const square = event.target;
+    const brush = document.querySelector('.current-brush');
+    square.classList.replace(getColor(square), getColor(brush));
+    mouseDown = false;
+    mouseUp = true
+  }
+}
+
+function inSquare(event){
+  if(mouseDown){
+    const square = event.target;
+    const brush = document.querySelector('.current-brush');
+    square.classList.replace(getColor(square), getColor(brush));
+  }
+}
+
+const squares = document.querySelectorAll('.square');
+
+for(const square of squares){
+    square.addEventListener('click', clicki);
+    square.addEventListener('mouseUp', inSquare);
+    mouseDown = false;
+}
 
 
 /**************************
@@ -71,3 +115,5 @@ while (count <= gridWidth * gridWidth) {
 // You'll need to add the appropriate event listener for each
 // square and for each palette color from the functions you
 // wrote above.
+
+
