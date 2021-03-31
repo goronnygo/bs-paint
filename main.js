@@ -71,40 +71,54 @@ for (const brushColor of brushColors){
 // run as event listeners (after the next step is set up) isn't a
 // bad idea for testing purposes.
 
+
 let mouseDown = false;
-let mouseUp = true;
 
-function getColor(ele){
-  return ele.classList[1];
+function getColor(element){
+  return element.classList[1];
 }
 
-
-
-function clicki(event){
-  if (mouseDown){
-    const square = event.target;
-    const brush = document.querySelector('.current-brush');
-    square.classList.replace(getColor(square), getColor(brush));
-    mouseDown = false;
-    mouseUp = true
-  }
+function clickSquare(event){
+  const square = event.target;
+  const brush = document.querySelector('.current-brush');
+  square.classList.replace(getColor(square), getColor(brush));
+  mouseDown = false;
 }
 
-function inSquare(event){
-  if(mouseDown){
+function handleMouseOverSquare(event){
+  if(mouseDown) {
     const square = event.target;
     const brush = document.querySelector('.current-brush');
     square.classList.replace(getColor(square), getColor(brush));
   }
 }
 
-const squares = document.querySelectorAll('.square');
+const squares = document.querySelectorAll('.square')
 
-for(const square of squares){
-    square.addEventListener('click', clicki);
-    square.addEventListener('mouseUp', inSquare);
-    mouseDown = false;
+for (const square of squares){
+  square.addEventListener('mouseenter', handleMouseOverSquare)
+  square.addEventListener('click', clickSquare)
+};
+
+function paletteColor(event){
+  const brush = document.querySelector('.current-brush');
+  brush.classList.replace(getColor(brush), getColor(event.target));
 }
+
+const paletteColors = document.querySelectorAll('.palette-color');
+
+for (const paletteColor of paletteColors){
+  paletteColor.addEventListener('click', paletteColor);
+};
+
+document.body.addEventListener('mousedown', () => {
+  mouseDown = true;
+})
+
+document.body.addEventListener('mouseup', () => {
+  mouseDown = false;
+})
+
 
 
 /**************************
